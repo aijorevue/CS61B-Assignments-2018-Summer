@@ -1,30 +1,39 @@
 public class LinkedListDeque<T> {
 
-    private class Node{
+    private class Node<T>{
         private T data;
-        private Node previous;
-        private Node next;
+        private Node<T> previous;
+        private Node<T> next;
 
-        Node(T d,Node p,Node n){
+        Node(T d,Node<T> p,Node<T> n){
             data=d;
             previous=p;
             next=n;
         }
+
+        Node(){
+            this(null,null,null);
+        }
+        Node(T i){
+            this(i,null,null);
+        }
+        Node(T i,Node<T> p){
+            this(i,p,null);
+        }
+
         @Override
         public String toString(){
             return "("+data+")";
         }
     }
 
-    Node sentinel;
-    Node lastsentinel;
+    private Node<T> sentinel;
+    private Node<T> lastsentinel;
     int size;
     public LinkedListDeque (){
-        sentinel=new Node(null,null,null);
-        lastsentinel=sentinel;
-        sentinel.next=lastsentinel;
-        lastsentinel.previous=sentinel;
         size=0;
+        sentinel=null;
+        lastsentinel=null;
     }
    public void addFirst(T item){
        Node temp=new Node(item,null,null);
@@ -67,7 +76,7 @@ public class LinkedListDeque<T> {
         temp.next=null;
         temp.previous=null;
         size--;
-        return temp.data;
+        return (T) temp.data;
     }
 
     public T removeLast(){
@@ -76,7 +85,7 @@ public class LinkedListDeque<T> {
         lastsentinel.previous=temp.previous;
         temp.previous=null;
         temp.next=null;
-        return temp.data;
+        return (T)temp.data;
     }
 
     public T get(int index){
@@ -86,7 +95,7 @@ public class LinkedListDeque<T> {
             index--;
         }
         if(index==0){
-            return temp.data;
+            return (T) temp.data;
         }
         else{
             return null;
@@ -96,7 +105,7 @@ public class LinkedListDeque<T> {
     public T getRecursive(int index){
         temp=temp.next;
         if(index==0){
-            return temp.data;
+            return (T) temp.data;
         }
         index--;
         return getRecursive(index);

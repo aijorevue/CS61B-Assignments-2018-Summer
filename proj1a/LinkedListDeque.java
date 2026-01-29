@@ -1,47 +1,38 @@
 public class LinkedListDeque<T> {
 
-    private class Node<T>{
+    private class Node{
         private T data;
-        private Node<T> previous;
-        private Node<T> next;
+        private Node previous;
+        private Node next;
 
-        Node(T d,Node<T> p,Node<T> n){
+        Node(T d,Node p,Node n){
             data=d;
             previous=p;
             next=n;
         }
-
-        Node(){
-            this(null,null,null);
-        }
-        Node(T i){
-            this(i,null,null);
-        }
-        Node(T i,Node<T> p){
-            this(i,p,null);
-        }
-
         @Override
         public String toString(){
             return "("+data+")";
         }
     }
 
-    private Node<T> sentinel;
-    private Node<T> lastsentinel;
+    Node sentinel;
+    Node lastsentinel;
     int size;
     public LinkedListDeque (){
+        sentinel=new Node(null,null,null);
+        lastsentinel=sentinel;
+        sentinel.next=lastsentinel;
+        lastsentinel.previous=sentinel;
         size=0;
-        sentinel=null;
-        lastsentinel=null;
     }
-   public void addFirst(T item){
-       Node temp=new Node(item,null,null);
-       sentinel.next.previous=temp;
-       temp.next=sentinel.next;
-       sentinel.next=temp;
-       temp.previous=sentinel;
-       size+=1;
+    public void addFirst(T item){
+        Node temp=new Node(item,null,null);
+        sentinel.next.previous=temp;
+        temp.next=sentinel.next;
+        sentinel.next=temp;
+        temp.previous=sentinel;
+        size+=1;
     }
 
     public void addLast(T item){
@@ -76,7 +67,7 @@ public class LinkedListDeque<T> {
         temp.next=null;
         temp.previous=null;
         size--;
-        return (T) temp.data;
+        return temp.data;
     }
 
     public T removeLast(){
@@ -85,7 +76,7 @@ public class LinkedListDeque<T> {
         lastsentinel.previous=temp.previous;
         temp.previous=null;
         temp.next=null;
-        return (T)temp.data;
+        return temp.data;
     }
 
     public T get(int index){
@@ -95,7 +86,7 @@ public class LinkedListDeque<T> {
             index--;
         }
         if(index==0){
-            return (T) temp.data;
+            return temp.data;
         }
         else{
             return null;
@@ -105,7 +96,7 @@ public class LinkedListDeque<T> {
     public T getRecursive(int index){
         temp=temp.next;
         if(index==0){
-            return (T) temp.data;
+            return temp.data;
         }
         index--;
         return getRecursive(index);

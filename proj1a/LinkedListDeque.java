@@ -1,14 +1,29 @@
 public class LinkedListDeque<T> {
 
-    private class Node{
+    private static class Node<T>{
         private T data;
-        private Node previous;
-        private Node next;
+        private Node<T> previous;
+        private Node<T> next;
 
-        Node(T d,Node p,Node n){
+        Node(Node<T> p,T d,Node<T> n){
             data=d;
             previous=p;
             next=n;
+        }
+        Node(T d,Node<T> n){
+            data=d;
+            next=n;
+            previous=null;
+        }
+        Node(Node<T> n,T d){
+            data=d;
+            next=null;
+            previous=n;
+        }
+        public Node(T i) {
+            previous = null;
+            data = i;
+            next = null;
         }
         @Override
         public String toString(){
@@ -16,31 +31,38 @@ public class LinkedListDeque<T> {
         }
     }
 
-    Node sentinel;
-    Node lastsentinel;
+    Node<T> sentinel;
+    Node<T> lastsentinel;
     int size;
     public LinkedListDeque (){
-        sentinel=new Node(null,null,null);
-        lastsentinel=sentinel;
-        sentinel.next=lastsentinel;
-        lastsentinel.previous=sentinel;
+        sentinel=null;
+        lastsentinel=null;
         size=0;
     }
+    public LinkedListDeque(T item) {
+        sentinel = new Node<>(item);
+        lastsentinel = sentinel;
+        size = 1;
+    }
     public void addFirst(T item){
-        Node temp=new Node(item,null,null);
-        sentinel.next.previous=temp;
-        temp.next=sentinel.next;
-        sentinel.next=temp;
-        temp.previous=sentinel;
+        sentinel=new Node<>(item,sentinel);
+        if(size>0){
+            sentinel.next.previous=sentinel;
+        }
+        else{
+            lastsentinel=sentinel;
+        }
         size+=1;
     }
 
     public void addLast(T item){
-        Node temp=new Node(item,null,null);
-        lastsentinel.previous.next=temp;
-        temp.previous=lastsentinel.previous;
-        temp.next=lastsentinel;
-        lastsentinel.previous=temp;
+        lastsentinel=new Node<>(lastsentinel,item);
+        if(size>0){
+            lastsentinel.previous.next=lastsentinel;
+        }
+        else{
+            sentinel=lastsentinel;
+        }
         size+=1;
     }
 
@@ -53,51 +75,74 @@ public class LinkedListDeque<T> {
     }
 
     public void printDeque(){
-        Node temp=sentinel;
-        while(temp.next!=sentinel){
+        Node<T> temp=sentinel;
+        while(temp!=null){
+            System.out.print(temp.data);
             temp=temp.next;
-            System.out.print(temp.toString());
         }
     }
 
     public T removeFirst(){
-        Node temp=sentinel.next;
-        sentinel.next=temp.next;
-        temp.next.previous=sentinel;
-        temp.next=null;
-        temp.previous=null;
-        size--;
-        return temp.data;
-    }
-
-    public T removeLast(){
-        if(isEmpty()){
-            return null;
-        }
-        Node temp=lastsentinel.previous;
-        temp.previous.next=lastsentinel;
-        lastsentinel.previous=temp.previous;
-        temp.previous=null;
-        temp.next=null;
-        size--;
-        return temp.data;
-    }
-
-    public T get(int index){
-        Node temp=sentinel;
-        while(index>0){
-            temp=temp.next;
-            index--;
-        }
-        if(index==0){
-            return temp.data;
+        if(size!=0){
+            Node <T> temp=sentinel;
+            if(size!=1){
+                sentinel=sentinel.next;
+                sentinel.previous=null;
+            }
+            else{
+                sentinel=null;
+                lastsentinel=null;
+            }
+            temp.next=null;
+            T data=temp.data;
+            temp=null;
+            size--;
+            return data;
         }
         else{
             return null;
         }
     }
 
-    private T getRecursiveHelper(Node curr,int index){
+    public T removeLast(){
+        if(size!=0){
+            Node<T> temp=lastsentinel;
+            if(size!=1){
+                lastsentinel=lastsentinel.previous;
+                lastsentinel.next=null;
+            }
+            else{
+                sentinel=null;
+                lastsentinel=null;
+            }
+            temp.previous=null;
+            T data=temp.data;
+            temp=null;
+            size--;
+            return data;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public T get(int index){
+        T data;
+        if(index<0||index>size){
+            return null;
+        }
+        else{
+            Node<T> temp=sentinel;
+            while(index>0){
+                temp=temp.next;
+                index--;
+            }
+            data=temp.data;
+        }
+        return data;
+    }
+
+    private T getRecursiveHelper(Node<T> curr,int index){
         if(index==0){
             return curr.data;
         }

@@ -31,19 +31,15 @@ public class LinkedListDeque<T> {
         }
     }
 
-    Node<T> sentinel;
-    Node<T> lastsentinel;
-    int size;
+    private Node<T> sentinel;
+    private Node<T> lastsentinel;
+    private int size;
     public LinkedListDeque (){
         sentinel=null;
         lastsentinel=null;
         size=0;
     }
-    public LinkedListDeque(T item) {
-        sentinel = new Node<>(item);
-        lastsentinel = sentinel;
-        size = 1;
-    }
+
     public void addFirst(T item){
         sentinel=new Node<>(item,sentinel);
         if(size>0){

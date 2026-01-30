@@ -7,7 +7,7 @@ public class ArrayDeque <T>{
         size=0;
     }
 
-    public boolean isFull(){
+    private boolean isFull(){
         return size==data.length;
     }
     public void addFirst(T item){

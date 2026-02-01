@@ -1,7 +1,7 @@
 public class Palindrome{
     //the take2
 
-    OffByN obo=new OffByN(2);
+    OffByOne obo=new OffByOne();
     public Deque<Character> wordToDeque(String word){
         Deque<Character> temp=new ArrayDeque<>();
         for(int i=0;i<word.length();i++){

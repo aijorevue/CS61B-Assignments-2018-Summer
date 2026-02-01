@@ -16,7 +16,7 @@ public class Palindrome{
         for(int i=0;i<word.length();i++){
             char a=word.charAt(i);
             char b=word.charAt(word.length()-i-1);
-            if(obo.equalChars(a,b)){
+            if(a==b){
                 continue;
             }
             return false;

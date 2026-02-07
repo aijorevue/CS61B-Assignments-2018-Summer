@@ -60,7 +60,7 @@ public class HexWorld {
             }
         }
 
-        addHexagon(10,10,3,Tileset.GRASS);
+        addHexagon(10,10,3,Tileset.FLOOR);
 
         ter.renderFrame(world);
     }

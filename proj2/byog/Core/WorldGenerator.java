@@ -8,15 +8,30 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
+import static byog.Core.Prime.calculate_prime;
+
 public class WorldGenerator {
 
-    private static final int width=50;
-    private static final int height=50;
-    private static TETile[][] world=new TETile[width][height];
-    private static int SEED=0;
-    private static Random RANDOM=new Random(SEED);
+    private int width;
+    private int height;
+    private long SEED;
+    private TETile[][] world;
+    private Random RANDOM;
 
-    private static void Nothing_world(){
+    public TETile[][] get_world(){
+        return world;
+    }
+    public WorldGenerator(int width,int height,long seed){
+        this.width =width;
+        this.height=height;
+        SEED=seed;
+        world=new TETile[width][height];
+        RANDOM=new Random(SEED);
+
+    }
+
+
+    private void Nothing_world(){
         for(int i=0;i<width;i++){
             for(int j=0;j<height;j++){
                 world[i][j]=Tileset.NOTHING;
@@ -24,7 +39,7 @@ public class WorldGenerator {
         }
     }
 
-    private static Room random_room(){
+    private Room random_room(){
         int x=RANDOM.nextInt(width-7);
         int y=RANDOM.nextInt(height-7);
         int w=RANDOM.nextInt(7)+3;
@@ -33,7 +48,7 @@ public class WorldGenerator {
         int centerY=y+h/2;
         return new Room(x,y,w,h);
     }
-    private static void generate_wall(Room room){
+    private void generate_wall(Room room){
         for(int i=room.x;i<room.x+room.w;i++){
             for(int j=room.y;j<room.y+room.h;j++){
                 world[i][j]=Tileset.WALL;
@@ -41,16 +56,16 @@ public class WorldGenerator {
         }
     }
 
-    private static void generate_floor(Room room){
+    private void generate_floor(Room room){
         for(int i=room.x+1;i<room.x+room.w-1;i++){
             for(int j=room.y+1;j<room.y+room.h-1;j++){
                 world[i][j]=Tileset.FLOOR;
             }
         }
     }
-    private static List<Room> rooms = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
-    private static void generate_random_room(int count) {
+    private void generate_random_room(int count) {
 
         for (int i = 0; i < count; i++) {
             int attempts = 0;
@@ -95,17 +110,88 @@ public class WorldGenerator {
         System.out.println("总共生成了 " + rooms.size() + " 个房间");
     }
 
-    private void generate_corride(){
 
+    private void drawLShapedCorridor(Room r1, Room r2) {
+        int x1 = r1.centerX;
+        int y1 = r1.centerY;
+        int x2 = r2.centerX;
+        int y2 = r2.centerY;
+
+        // 随机决定是先横再纵，还是先纵再横 (增加地图多样性)
+        if (RANDOM.nextBoolean()) {
+            drawHorizontalLine(x1, x2, y1);
+            drawVerticalLine(y1, y2, x2);
+        } else {
+            drawVerticalLine(y1, y2, x1);
+            drawHorizontalLine(x1, x2, y2);
+        }
     }
 
+    // 简化后的横向线：只管铺地板
+    private void drawHorizontalLine(int xStart, int xEnd, int y) {
+        for (int x = Math.min(xStart, xEnd); x <= Math.max(xStart, xEnd); x++) {
+            world[x][y] = Tileset.FLOOR;
+        }
+    }
 
-    public static void main(String[] args){
-        TERenderer ter=new TERenderer();
-        ter.initialize(width,height);
+    // 简化后的纵向线：只管铺地板
+    private void drawVerticalLine(int yStart, int yEnd, int x) {
+        for (int y = Math.min(yStart, yEnd); y <= Math.max(yStart, yEnd); y++) {
+            world[x][y] = Tileset.FLOOR;
+        }
+    }
+
+    private void fillWalls() {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                // 如果当前位置是空的，检查它是否应该成为墙
+                if (world[x][y] == Tileset.NOTHING) {
+                    if (hasNeighborFloor(x, y)) {
+                        world[x][y] = Tileset.WALL;
+                    }
+                }
+            }
+        }
+    }
+
+    // 辅助方法：检查周围 8 个格子是否有地板
+    private boolean hasNeighborFloor(int x, int y) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int nx = x + i;
+                int ny = y + j;
+                // 确保不越界
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+                    if (world[nx][ny] == Tileset.FLOOR) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private void random_corrider(List<Room> rooms){
+        for(int i=0;i<rooms.size();i++){
+            int count=RANDOM.nextInt(3);
+           // if(count==1){
+           //     List<Edge> mstEdges=calculate_prime(rooms);
+           //      for(Edge ii:mstEdges){
+           //          drawLShapedCorridor(rooms.get(ii.from),rooms.get(ii.to));
+           //     }
+           // }
+            for(int j=0;j<count;j++){
+                int link_room=RANDOM.nextInt(rooms.size());
+                drawLShapedCorridor(rooms.get(i),rooms.get(link_room));
+            }
+        }
+    }
+
+    public TETile[][] generate(){
         Nothing_world();
         generate_random_room(10);
-
-        ter.renderFrame(world);
+        random_corrider(rooms);
+        fillWalls();
+        return world;
     }
+
 }

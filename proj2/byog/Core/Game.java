@@ -32,7 +32,17 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
+        input=input.toUpperCase();
         TETile[][] finalWorldFrame = null;
+        long seed=0;
+        for(int i=0;i<input.length();i++){
+            if(i!=0&&i!=input.length()-1){
+                seed+=input.charAt(i);
+            }
+        }
+        WorldGenerator world=new WorldGenerator(WIDTH,HEIGHT,seed);
+        finalWorldFrame=world.generate();
         return finalWorldFrame;
     }
+
 }

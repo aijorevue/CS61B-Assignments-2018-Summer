@@ -18,51 +18,54 @@ public class WorldGenerator {
     private TETile[][] world;
     private Random RANDOM;
 
-    public TETile[][] get_world(){
+    public TETile[][] get_world() {
         return world;
     }
-    public WorldGenerator(int width,int height,long seed){
-        this.width =width;
-        this.height=height;
-        SEED=seed;
-        world=new TETile[width][height];
-        RANDOM=new Random(SEED);
+
+    public WorldGenerator(int width, int height, long seed) {
+        this.width = width;
+        this.height = height;
+        SEED = seed;
+        world = new TETile[width][height];
+        RANDOM = new Random(SEED);
 
     }
 
 
-    private void Nothing_world(){
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                world[i][j]=Tileset.NOTHING;
+    private void Nothing_world() {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                world[i][j] = Tileset.NOTHING;
             }
         }
     }
 
-    private Room random_room(){
-        int x=RANDOM.nextInt(width-7);
-        int y=RANDOM.nextInt(height-7);
-        int w=RANDOM.nextInt(7)+3;
-        int h=RANDOM.nextInt(7)+3;
-        int centerX=x+w/2;
-        int centerY=y+h/2;
-        return new Room(x,y,w,h);
+    private Room random_room() {
+        int x = RANDOM.nextInt(width - 7);
+        int y = RANDOM.nextInt(height - 7);
+        int w = RANDOM.nextInt(7) + 3;
+        int h = RANDOM.nextInt(7) + 3;
+        int centerX = x + w / 2;
+        int centerY = y + h / 2;
+        return new Room(x, y, w, h);
     }
-    private void generate_wall(Room room){
-        for(int i=room.x;i<room.x+room.w;i++){
-            for(int j=room.y;j<room.y+room.h;j++){
-                world[i][j]=Tileset.WALL;
+
+    private void generate_wall(Room room) {
+        for (int i = room.x; i < room.x + room.w; i++) {
+            for (int j = room.y; j < room.y + room.h; j++) {
+                world[i][j] = Tileset.WALL;
             }
         }
     }
 
-    private void generate_floor(Room room){
-        for(int i=room.x+1;i<room.x+room.w-1;i++){
-            for(int j=room.y+1;j<room.y+room.h-1;j++){
-                world[i][j]=Tileset.FLOOR;
+    private void generate_floor(Room room) {
+        for (int i = room.x + 1; i < room.x + room.w - 1; i++) {
+            for (int j = room.y + 1; j < room.y + room.h - 1; j++) {
+                world[i][j] = Tileset.FLOOR;
             }
         }
     }
+
     private List<Room> rooms = new ArrayList<>();
 
     private void generate_random_room(int count) {
@@ -90,14 +93,14 @@ public class WorldGenerator {
                 if (noOverlap || rooms.isEmpty()) {
                     rooms.add(newRoom);
                     roomAdded = true;
-                    System.out.println("成功添加房间 " + (rooms.size()) +
-                            ": (" + newRoom.x + "," + newRoom.y +
-                            ") 大小: " + newRoom.w + "x" + newRoom.h);
+                    //System.out.println("成功添加房间 " + (rooms.size()) +
+                    //        ": (" + newRoom.x + "," + newRoom.y +
+                    //        ") 大小: " + newRoom.w + "x" + newRoom.h);
                 }
                 attempts++;
             }
             if (!roomAdded) {
-                System.out.println("无法生成第 " + (i+1) + " 个房间，跳过");
+                //System.out.println("无法生成第 " + (i + 1) + " 个房间，跳过");
             }
         }
 
@@ -107,7 +110,7 @@ public class WorldGenerator {
             generate_floor(room);
         }
 
-        System.out.println("总共生成了 " + rooms.size() + " 个房间");
+        //System.out.println("总共生成了 " + rooms.size() + " 个房间");
     }
 
 
@@ -170,23 +173,28 @@ public class WorldGenerator {
         }
         return false;
     }
-    private void random_corrider(List<Room> rooms){
-        for(int i=0;i<rooms.size();i++){
-            int count=RANDOM.nextInt(3);
-           // if(count==1){
-           //     List<Edge> mstEdges=calculate_prime(rooms);
-           //      for(Edge ii:mstEdges){
-           //          drawLShapedCorridor(rooms.get(ii.from),rooms.get(ii.to));
-           //     }
-           // }
-            for(int j=0;j<count;j++){
-                int link_room=RANDOM.nextInt(rooms.size());
-                drawLShapedCorridor(rooms.get(i),rooms.get(link_room));
+
+    private void random_corrider(List<Room> rooms) {
+        for (int i = 0; i < rooms.size(); i++) {
+            int count = RANDOM.nextInt(3);
+            // if(count==1){
+            //     List<Edge> mstEdges=calculate_prime(rooms);
+            //      for(Edge ii:mstEdges){
+            //          drawLShapedCorridor(rooms.get(ii.from),rooms.get(ii.to));
+            //     }
+            // }
+            for (int j = 0; j < count; j++) {
+                int link_room = RANDOM.nextInt(rooms.size());
+                drawLShapedCorridor(rooms.get(i), rooms.get(link_room));
             }
+        }
+        List<Edge> mstEdges = calculate_prime(rooms);
+        for (Edge ii : mstEdges) {
+            drawLShapedCorridor(rooms.get(ii.from), rooms.get(ii.to));
         }
     }
 
-    public TETile[][] generate(){
+    public TETile[][] generate() {
         Nothing_world();
         generate_random_room(10);
         random_corrider(rooms);

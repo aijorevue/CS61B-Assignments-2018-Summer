@@ -38,8 +38,8 @@ public class WorldGenerator {
     }
 
     private Room randomRoom() {
-        int x = RANDOM.nextInt(width - 7);
-        int y = RANDOM.nextInt(height - 7);
+        int x = RANDOM.nextInt(width - 12)+1;
+        int y = RANDOM.nextInt(height - 12)+1;
         int w = RANDOM.nextInt(7) + 3;
         int h = RANDOM.nextInt(7) + 3;
         int centerX = x + w / 2;

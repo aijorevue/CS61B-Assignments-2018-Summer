@@ -18,7 +18,6 @@ public class WorldGenerator {
     private Random RANDOM;
 
 
-
     public WorldGenerator(int width, int height, long seed) {
         this.width = width;
         this.height = height;
@@ -38,8 +37,8 @@ public class WorldGenerator {
     }
 
     private Room randomRoom() {
-        int x = RANDOM.nextInt(width - 12)+1;
-        int y = RANDOM.nextInt(height - 12)+1;
+        int x = RANDOM.nextInt(width - 12) + 1;
+        int y = RANDOM.nextInt(height - 12) + 1;
         int w = RANDOM.nextInt(7) + 3;
         int h = RANDOM.nextInt(7) + 3;
         int centerX = x + w / 2;
@@ -190,6 +189,7 @@ public class WorldGenerator {
     }
 
     public TETile[][] generate() {
+        rooms.clear();
         nothingWorld();
         generateRandomRoom(10);
         randomCorrider(rooms);

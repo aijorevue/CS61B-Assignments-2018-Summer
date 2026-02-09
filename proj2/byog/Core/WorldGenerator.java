@@ -1,6 +1,5 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
@@ -32,7 +31,7 @@ public class WorldGenerator {
     }
 
 
-    private void Nothing_world() {
+    private void nothingWorld() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 world[i][j] = Tileset.NOTHING;
@@ -195,11 +194,10 @@ public class WorldGenerator {
     }
 
     public TETile[][] generate() {
-        Nothing_world();
+        nothingWorld();
         generate_random_room(10);
         random_corrider(rooms);
         fillWalls();
         return world;
     }
-
 }

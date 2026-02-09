@@ -8,7 +8,7 @@ public class Room {
     public int centerX;
     public int centerY;
 
-    public Room(){
+    public Room() {
         this.x = 0;
         this.y = 0;
         this.w = 0;
@@ -16,7 +16,8 @@ public class Room {
         this.centerX = x + w / 2;
         this.centerY = y + h / 2;
     }
-    public Room(int x,int y,int w,int h){
+
+    public Room(int x, int y, int w, int h) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -25,8 +26,8 @@ public class Room {
         this.centerY = y + h / 2;
     }
 
-    public boolean overlaps(Room other){
-        return x+w<other.x||other.x+other.w<x||y+h<other.y||other.y+other.h<y;
+    public boolean overlaps(Room other) {
+        return x + w < other.x || other.x + other.w < x || y + h < other.y || other.y + other.h < y;
     }
 
 

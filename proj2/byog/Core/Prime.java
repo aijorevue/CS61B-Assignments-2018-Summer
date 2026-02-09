@@ -6,19 +6,19 @@ import java.util.List;
 public class Prime {
 
 
-    private static double distace(Room r1,Room r2){
-        int dx=r1.centerX-r2.centerX;
-        int dy=r1.centerY-r2.centerY;
-        return Math.sqrt(dx*dx+dy*dy);
+    private static double distace(Room r1, Room r2) {
+        int dx = r1.centerX - r2.centerX;
+        int dy = r1.centerY - r2.centerY;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
 
-    private static List<Edge> calculate_the_edge(List<Room> rooms){
-        List<Edge> edge=new ArrayList<Edge>();
-        for(int i=0;i<rooms.size();i++){
-            for(int j=i+1;j<rooms.size();j++){
-                double dis=distace(rooms.get(i),rooms.get(j));
-                edge.add(new Edge(i,j,dis));
+    private static List<Edge> calculate_the_edge(List<Room> rooms) {
+        List<Edge> edge = new ArrayList<Edge>();
+        for (int i = 0; i < rooms.size(); i++) {
+            for (int j = i + 1; j < rooms.size(); j++) {
+                double dis = distace(rooms.get(i), rooms.get(j));
+                edge.add(new Edge(i, j, dis));
             }
         }
         return edge;
@@ -30,7 +30,7 @@ public class Prime {
         List<Edge> mstEdges = new ArrayList<>();
         visited[0] = true;
 
-        for(int count=0;count<rooms.size()-1;count++) {
+        for (int count = 0; count < rooms.size() - 1; count++) {
             Edge bestEdge = null;
             double smallest = Double.MAX_VALUE;
 

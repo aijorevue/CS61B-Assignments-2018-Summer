@@ -30,23 +30,27 @@ public class Room {
         return x + w < other.x || other.x + other.w < x || y + h < other.y || other.y + other.h < y;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
 
-    public int getY(){
+    public int getY() {
         return y;
     }
-    public int getW(){
+
+    public int getW() {
         return w;
     }
-    public int getH(){
+
+    public int getH() {
         return h;
     }
-    public int getCenterX(){
+
+    public int getCenterX() {
         return centerX;
     }
-    public int getCenterY(){
+
+    public int getCenterY() {
         return centerY;
     }
 }

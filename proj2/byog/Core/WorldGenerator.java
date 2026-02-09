@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 
-import static byog.Core.Prime.calculate_prime;
+import static byog.Core.Prime.calculatePrime;
 
 public class WorldGenerator {
 
@@ -17,9 +17,7 @@ public class WorldGenerator {
     private TETile[][] world;
     private Random RANDOM;
 
-    public TETile[][] get_world() {
-        return world;
-    }
+
 
     public WorldGenerator(int width, int height, long seed) {
         this.width = width;
@@ -98,9 +96,7 @@ public class WorldGenerator {
                 }
                 attempts++;
             }
-            if (!roomAdded) {
-                //System.out.println("无法生成第 " + (i + 1) + " 个房间，跳过");
-            }
+
         }
 
         // 绘制所有房间
@@ -173,8 +169,8 @@ public class WorldGenerator {
         return false;
     }
 
-    private void random_corrider(List<Room> rooms) {
-        for (int i = 0; i < rooms.size(); i++) {
+    private void randomCorrider(List<Room> roomsList) {
+        for (int i = 0; i < roomsList.size(); i++) {
             int count = RANDOM.nextInt(3);
             // if(count==1){
             //     List<Edge> mstEdges=calculate_prime(rooms);
@@ -183,11 +179,11 @@ public class WorldGenerator {
             //     }
             // }
             for (int j = 0; j < count; j++) {
-                int link_room = RANDOM.nextInt(rooms.size());
-                drawLShapedCorridor(rooms.get(i), rooms.get(link_room));
+                int linkRoom = RANDOM.nextInt(roomsList.size());
+                drawLShapedCorridor(roomsList.get(i), roomsList.get(linkRoom));
             }
         }
-        List<Edge> mstEdges = calculate_prime(rooms);
+        List<Edge> mstEdges = calculatePrime(rooms);
         for (Edge ii : mstEdges) {
             drawLShapedCorridor(rooms.get(ii.from), rooms.get(ii.to));
         }
@@ -196,7 +192,7 @@ public class WorldGenerator {
     public TETile[][] generate() {
         nothingWorld();
         generateRandomRoom(10);
-        random_corrider(rooms);
+        randomCorrider(rooms);
         fillWalls();
         return world;
     }

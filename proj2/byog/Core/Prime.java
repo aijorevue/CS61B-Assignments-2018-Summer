@@ -13,7 +13,7 @@ public class Prime {
     }
 
 
-    private static List<Edge> calculate_the_edge(List<Room> rooms) {
+    private static List<Edge> calculateTheEdge(List<Room> rooms) {
         List<Edge> edge = new ArrayList<Edge>();
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = i + 1; j < rooms.size(); j++) {
@@ -24,8 +24,8 @@ public class Prime {
         return edge;
     }
 
-    public static List<Edge> calculate_prime(List<Room> rooms) {
-        List<Edge> allEdges = calculate_the_edge(rooms);
+    public static List<Edge> calculatePrime(List<Room> rooms) {
+        List<Edge> allEdges = calculateTheEdge(rooms);
         boolean[] visited = new boolean[rooms.size()];
         List<Edge> mstEdges = new ArrayList<>();
         visited[0] = true;

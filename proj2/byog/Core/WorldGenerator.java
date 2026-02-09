@@ -39,7 +39,7 @@ public class WorldGenerator {
         }
     }
 
-    private Room random_room() {
+    private Room randomRoom() {
         int x = RANDOM.nextInt(width - 7);
         int y = RANDOM.nextInt(height - 7);
         int w = RANDOM.nextInt(7) + 3;
@@ -49,17 +49,17 @@ public class WorldGenerator {
         return new Room(x, y, w, h);
     }
 
-    private void generate_wall(Room room) {
-        for (int i = room.x; i < room.x + room.w; i++) {
-            for (int j = room.y; j < room.y + room.h; j++) {
+    private void generateWall(Room room) {
+        for (int i = room.getX(); i < room.getX() + room.getW(); i++) {
+            for (int j = room.getY(); j < room.getY() + room.getH(); j++) {
                 world[i][j] = Tileset.WALL;
             }
         }
     }
 
-    private void generate_floor(Room room) {
-        for (int i = room.x + 1; i < room.x + room.w - 1; i++) {
-            for (int j = room.y + 1; j < room.y + room.h - 1; j++) {
+    private void generateFloor(Room room) {
+        for (int i = room.getX() + 1; i < room.getX() + room.getW() - 1; i++) {
+            for (int j = room.getY() + 1; j < room.getY() + room.getH() - 1; j++) {
                 world[i][j] = Tileset.FLOOR;
             }
         }
@@ -67,14 +67,14 @@ public class WorldGenerator {
 
     private List<Room> rooms = new ArrayList<>();
 
-    private void generate_random_room(int count) {
+    private void generateRandomRoom(int count) {
 
         for (int i = 0; i < count; i++) {
             int attempts = 0;
             boolean roomAdded = false;
 
             while (attempts < 100 && !roomAdded) {
-                Room newRoom = random_room();
+                Room newRoom = randomRoom();
                 boolean noOverlap = true; // 假设没有重叠
 
                 // 根据你的overlaps方法逻辑
@@ -105,8 +105,8 @@ public class WorldGenerator {
 
         // 绘制所有房间
         for (Room room : rooms) {
-            generate_wall(room);
-            generate_floor(room);
+            generateWall(room);
+            generateFloor(room);
         }
 
         //System.out.println("总共生成了 " + rooms.size() + " 个房间");
@@ -114,10 +114,10 @@ public class WorldGenerator {
 
 
     private void drawLShapedCorridor(Room r1, Room r2) {
-        int x1 = r1.centerX;
-        int y1 = r1.centerY;
-        int x2 = r2.centerX;
-        int y2 = r2.centerY;
+        int x1 = r1.getCenterX();
+        int y1 = r1.getCenterY();
+        int x2 = r2.getCenterX();
+        int y2 = r2.getCenterY();
 
         // 随机决定是先横再纵，还是先纵再横 (增加地图多样性)
         if (RANDOM.nextBoolean()) {
@@ -195,7 +195,7 @@ public class WorldGenerator {
 
     public TETile[][] generate() {
         nothingWorld();
-        generate_random_room(10);
+        generateRandomRoom(10);
         random_corrider(rooms);
         fillWalls();
         return world;

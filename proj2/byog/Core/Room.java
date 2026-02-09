@@ -1,12 +1,12 @@
 package byog.Core;
 
 public class Room {
-    public int x;
-    public int y;
-    public int w;
-    public int h;
-    public int centerX;
-    public int centerY;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
+    private int centerX;
+    private int centerY;
 
     public Room() {
         this.x = 0;
@@ -30,5 +30,23 @@ public class Room {
         return x + w < other.x || other.x + other.w < x || y + h < other.y || other.y + other.h < y;
     }
 
+    public int getX(){
+        return x;
+    }
 
+    public int getY(){
+        return y;
+    }
+    public int getW(){
+        return w;
+    }
+    public int getH(){
+        return h;
+    }
+    public int getCenterX(){
+        return centerX;
+    }
+    public int getCenterY(){
+        return centerY;
+    }
 }

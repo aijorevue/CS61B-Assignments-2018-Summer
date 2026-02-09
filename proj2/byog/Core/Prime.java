@@ -7,8 +7,8 @@ public class Prime {
 
 
     private static double distace(Room r1, Room r2) {
-        int dx = r1.centerX - r2.centerX;
-        int dy = r1.centerY - r2.centerY;
+        int dx = r1.getCenterX() - r2.getCenterX();
+        int dy = r1.getCenterY() - r2.getCenterY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 

@@ -34,15 +34,25 @@ public class Game {
         // drawn if the same inputs had been given to playWithKeyboard().
 
         input = input.toUpperCase();
-        TETile[][] finalWorldFrame = null;
-        long seed = 0;
-        for (int i = 0; i < input.length(); i++) {
-            if (i != 0 && i != input.length() - 1) {
-                seed += input.charAt(i);
-            }
+
+        // 找到 N 和 S 的位置
+        int start = input.indexOf('N') + 1;
+        int end = input.indexOf('S');
+
+        long seed;
+        // 提取 N 和 S 之间的字符串
+        if (start > 0 && end > start) {
+            String seedString = input.substring(start, end);
+            // 将字符串 "12345" 转换为数字 12345L
+            seed = Long.parseLong(seedString);
+        } else {
+            // 如果没有找到符合格式的种子，给一个默认值
+            seed = 0;
         }
+
         WorldGenerator world = new WorldGenerator(WIDTH, HEIGHT, seed);
-        finalWorldFrame = world.generate();
+        TETile[][] finalWorldFrame = world.generate();
+
         return finalWorldFrame;
     }
 

@@ -14,6 +14,7 @@ public class Percolation {
     private int virtualBottom;
 
     public Percolation(int N) {
+        validate(N);
         n = N;
         virtualTop = N * N;
         virtualBottom = N * N + 1;
@@ -23,8 +24,13 @@ public class Percolation {
         openSites = 0;
     }
 
-    private void validate(int row,int col){
-        if(row<0||col<0||row>n-1||col>n-1){
+    private void validate(int N){
+        if(N<=0){
+            throw new IllegalArgumentException("Illegal Argument Exception");
+        }
+    }
+    private void validate(int row, int col) {
+        if (row < 0 || col < 0 || row > n - 1 || col > n - 1) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
     }
@@ -34,9 +40,9 @@ public class Percolation {
     }
 
     public void open(int row, int col) {
-        validate(row,col);
-        if(isOpen(row,col)){
-            return ;
+        validate(row, col);
+        if (isOpen(row, col)) {
+            return;
         }
         opened[row][col] = true;
         openSites++;
@@ -61,12 +67,12 @@ public class Percolation {
     }      // open the site (row, col) if it is not open already
 
     public boolean isOpen(int row, int col) {
-        validate(row,col);
+        validate(row, col);
         return opened[row][col];
     }  // is the site (row, col) open?
 
     public boolean isFull(int row, int col) {
-        validate(row,col);
+        validate(row, col);
         return whetherFull.connected(turn(row, col), virtualTop);
         //2时代表水灌进来
     }  // is the site (row, col) full?

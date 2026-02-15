@@ -28,32 +28,36 @@ public class PercolationStats {
                     p.open(a, b);
                 }
             }
-            counts[i]= (double) p.numberOfOpenSites() /Math.pow(N,2);
+            counts[i] = (double) p.numberOfOpenSites() / Math.pow(N, 2);
         }
     }// perform T independent experiments on an N-by-N grid
-    public double mean(){
-        double mean=0;
+
+    public double mean() {
+        double mean = 0;
         for (double count : counts) {
             mean += count;
         }
-        return mean /counts.length;
+        return mean / counts.length;
     }                                           // sample mean of percolation threshold
-    public double stddev(){
-        double moecule=0;
+
+    public double stddev() {
+        double moecule = 0;
         for (double count : counts) {
             moecule += StrictMath.pow(count - mean(), 2);
         }
-        return Math.sqrt(moecule/(T-1));
+        return Math.sqrt(moecule / (T - 1));
     }                                 // sample standard deviation of percolation threshold
-    public double confidenceLow(){
-        return mean()-(1.96*stddev())/Math.sqrt(T);
+
+    public double confidenceLow() {
+        return mean() - (1.96 * stddev()) / Math.sqrt(T);
     }                                  // low endpoint of 95% confidence interval
-    public double confidenceHigh(){
-        return mean()+(1.96*stddev())/Math.sqrt(T);
+
+    public double confidenceHigh() {
+        return mean() + (1.96 * stddev()) / Math.sqrt(T);
     }
 
-    private void validate(int N,int T){
-        if(N<=0||T<=0){
+    private void validate(int N, int T) {
+        if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
     }

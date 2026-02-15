@@ -51,24 +51,37 @@ public class MemoryGame {
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        String temp = "";
-        for (int i = 0; i < n; i++) {
-            int index = rand.nextInt(26);
-            temp += CHARACTERS[index];
+        StringBuilder sb=new StringBuilder();
+
+        while(sb.length()<n){
+            sb.append(CHARACTERS[rand.nextInt(CHARACTERS.length)]);
         }
-        return temp;
+
+        return sb.toString();
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
+        int midWidth=width/2;
+        int midHeight=height/2;
+
+        StdDraw.clear();
         StdDraw.clear(Color.black);
-        Font font = new Font("Monospaced", Font.BOLD, 30);
-        StdDraw.setFont(font);
-        StdDraw.setPenColor(Color.WHITE);
-        StdDraw.text((double) this.width / 2, (double) this.height / 2, s);
-        StdDraw.show();
         //TODO: If game is not over, display relevant game information at the top of the screen
-        StdDraw.text((double) this.width / 2, ((double) this.height / 3) * 2, s);
+        if (!gameOver) {
+            Font smallFont = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(smallFont);
+            StdDraw.textLeft(1, height - 1, "Round: " + round);
+            StdDraw.text(midWidth, height - 1, playerTurn ? "Type!" : "Watch!");
+            StdDraw.textRight(width - 1, height - 1, ENCOURAGEMENT[round % ENCOURAGEMENT.length]);
+            StdDraw.line(0, height - 2, width, height - 2);
+        }
+
+        // Draw the actual text
+        Font bigFont = new Font("Monaco", Font.BOLD, 30);
+        StdDraw.setFont(bigFont);
+        StdDraw.setPenColor(Color.white);
+        StdDraw.text(midWidth, midHeight, s);
         StdDraw.show();
     }
 

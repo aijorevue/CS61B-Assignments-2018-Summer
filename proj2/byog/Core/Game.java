@@ -2,19 +2,96 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import edu.princeton.cs.algs4.ST;
+import edu.princeton.cs.introcs.StdDraw;
+
+import java.awt.*;
 
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 30;
-
+    public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
+    public WorldGenerator world;
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
+
     public void playWithKeyboard() {
+        StdDraw.enableDoubleBuffering();
+        StringBuilder input = new StringBuilder();
+
+        boolean save=false;
+        while (!world.gameOver()) {
+            if (StdDraw.hasNextKeyTyped()) {
+                input.append(StdDraw.nextKeyTyped());
+                char choice = Character.toUpperCase(input.charAt(input.length() - 1));
+                if(save &&choice=='Q'){
+                   save();
+                   return;
+                }
+                switch (choice) {
+                    case ':':
+                        save=true;
+                        break;
+                    case 'W':
+                        world.getPlayer().ahead(world.getWorld());
+                        break;
+                    case 'S':
+                        world.getPlayer().back(world.getWorld());
+                        break;
+                    case 'A':
+                        world.getPlayer().left(world.getWorld());
+                        break;
+                    case 'D':
+                        world.getPlayer().right(world.getWorld());
+                        break;
+                    default:
+                        break;
+                }
+                //ter.renderFrame(world.getWorld());
+            }
+            //showName();
+            ter.renderFrame(world.getWorld());
+            showName();
+            StdDraw.show();
+        }
+        drawGameOver();
+    }
+    private void save(){
+        StdDraw.clear(Color.black);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        java.awt.Font font = new java.awt.Font("AI", java.awt.Font.BOLD, 40);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH / 2, (HEIGHT / 3)*2, "Starting game now!!!!!");
+
+        font = new java.awt.Font("AI", java.awt.Font.BOLD, 20);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH/2,HEIGHT/2,"New Game (N)\nLoad Game (L)\nQuit (Q)");
+        StdDraw.show();
     }
 
+    private void drawGameOver(){
+        StdDraw.clear(Color.black);
+        StdDraw.setPenColor(StdDraw.WHITE);
+        java.awt.Font font = new java.awt.Font("Monaco", java.awt.Font.BOLD, 40);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "Game Over!");
+        StdDraw.show();
+        StdDraw.pause(3000);
+        System.exit(0);
+    }
+    private void showName() {
+        int x = (int) StdDraw.mouseX();
+        int y = (int) StdDraw.mouseY();
+
+        if (x < WIDTH && y < HEIGHT) {
+            StdDraw.setPenColor(Color.CYAN);
+            StdDraw.text(3, HEIGHT - 1, world.getWorld()[x][y].description());
+            //StdDraw.show();
+        }
+
+    }
     /**
      * Method used for autograding and testing the game code. The input string will be a series
      * of characters (for example, "n123sswwdasdassadwas", "n123sss:q", "lwww". The game should
@@ -50,7 +127,8 @@ public class Game {
             seed = 0;
         }
 
-        WorldGenerator world = new WorldGenerator(WIDTH, HEIGHT, seed);
+
+        world = new WorldGenerator(WIDTH, HEIGHT, seed);
         TETile[][] finalWorldFrame = world.generate();
 
         return finalWorldFrame;

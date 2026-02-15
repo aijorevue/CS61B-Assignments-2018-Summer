@@ -24,5 +24,7 @@ public class Main {
         TERenderer ter = new TERenderer();
         ter.initialize(Game.WIDTH, Game.HEIGHT);
         ter.renderFrame(world);
+        game.playWithKeyboard();
+        
     }
 }

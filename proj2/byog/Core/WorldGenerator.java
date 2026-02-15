@@ -16,8 +16,14 @@ public class WorldGenerator {
     private long SEED;
     private TETile[][] world;
     private Random RANDOM;
-
-
+    private Player player;
+    private Goal goal;
+    public TETile[][] getWorld(){
+        return world;
+    }
+    public Player getPlayer(){
+        return player;
+    }
     public WorldGenerator(int width, int height, long seed) {
         this.width = width;
         this.height = height;
@@ -188,12 +194,44 @@ public class WorldGenerator {
         }
     }
 
+    public Player generatePlayer(){
+         int x=RANDOM.nextInt(width-1);
+         int y=RANDOM.nextInt(height-1);
+
+         while(world[x][y]!=Tileset.FLOOR){
+             x=RANDOM.nextInt(width-1);
+             y=RANDOM.nextInt(height-1);
+         }
+        return new Player(x,y);
+    }
+
+    public Goal generateGoal(){
+        int x=RANDOM.nextInt(width-1);
+        int y=RANDOM.nextInt(height-1);
+
+        while(world[x][y]!=Tileset.WALL){
+            x=RANDOM.nextInt(width-1);
+            y=RANDOM.nextInt(height-1);
+        }
+        return new Goal(x,y);
+    }
+    //施工
+    boolean gameOver(){
+        return player.getPlayerX() == goal.getGoalX() && player.getPlayerY() == goal.getGoalY();
+    }
+    //施工
+
     public TETile[][] generate() {
         rooms.clear();
         nothingWorld();
         generateRandomRoom(10);
         randomCorrider(rooms);
         fillWalls();
+        player=generatePlayer();
+        player.drawLocation(world);
+        goal=generateGoal();
+        goal.theGoal(world);
+        //
         return world;
     }
 }

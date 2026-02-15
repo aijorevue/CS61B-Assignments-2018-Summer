@@ -24,11 +24,12 @@ public class Percolation {
         openSites = 0;
     }
 
-    private void validate(int N){
-        if(N<=0){
+    private void validate(int N) {
+        if (N <= 0) {
             throw new IllegalArgumentException("Illegal Argument Exception");
         }
     }
+
     private void validate(int row, int col) {
         if (row < 0 || col < 0 || row > n - 1 || col > n - 1) {
             throw new IndexOutOfBoundsException("Index out of bounds");

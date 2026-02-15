@@ -2,7 +2,6 @@ package hw2;
 
 import edu.princeton.cs.introcs.StdRandom;
 
-import java.util.Random;
 
 public class PercolationStats {
     private int N;
@@ -13,10 +12,10 @@ public class PercolationStats {
     private double[] counts;
 
 
-    public PercolationStats(int N, int T, PercolationFactory pf) {
-        validate(N, T);
-        this.N = N;
-        this.T = T;
+    public PercolationStats(int n, int t, PercolationFactory pf) {
+        validate(n, t);
+        this.N = n;
+        this.T = t;
         this.pf = pf;
         this.counts = new double[T];
         for (int i = 0; i < T; i++) {
@@ -30,7 +29,7 @@ public class PercolationStats {
             }
             counts[i] = (double) p.numberOfOpenSites() / Math.pow(N, 2);
         }
-    }// perform T independent experiments on an N-by-N grid
+    } // perform T independent experiments on an N-by-N grid
 
     public double mean() {
         double mean = 0;

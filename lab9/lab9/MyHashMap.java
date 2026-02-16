@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -35,9 +36,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    /** Computes the hash function of the given key. Consists of
-     *  computing the hashcode, followed by modding by the number of buckets.
-     *  To handle negative numbers properly, uses floorMod instead of %.
+    /**
+     * Computes the hash function of the given key. Consists of
+     * computing the hashcode, followed by modding by the number of buckets.
+     * To handle negative numbers properly, uses floorMod instead of %.
      */
     private int hash(K key) {
         if (key == null) {
@@ -53,22 +55,26 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        int index = hash(key);
+        ArrayMap<K, V> p = buckets[index];
+        return p.get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        int index = hash(key);
+        ArrayMap<K, V> p = buckets[index];
+        p.put(key, value);
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
-    //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
+    /// ///////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
 
     /* Returns a Set view of the keys contained in this map. */
     @Override

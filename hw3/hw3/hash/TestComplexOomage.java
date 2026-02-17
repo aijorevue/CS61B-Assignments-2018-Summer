@@ -39,11 +39,13 @@ public class TestComplexOomage {
         List<Oomage> deadlyList = new ArrayList<>();
 
         // Your code here.
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             List<Integer> list = new ArrayList<>();
             list.add(i);
             list.add(i + 1);
-            list.add(99);
+            for (int j = 0; j < 5; j++) {
+                list.add(0);
+            }
             deadlyList.add(new ComplexOomage(list));
         }
 

@@ -42,7 +42,7 @@ public class TestComplexOomage {
         for (int i = 0; i < 100; i++) {
             List<Integer> list = new ArrayList<>();
             list.add(i);
-            list.add(i + 1);
+
             for (int j = 0; j < 5; j++) {
                 list.add(0);
             }

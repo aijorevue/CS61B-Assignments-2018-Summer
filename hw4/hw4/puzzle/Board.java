@@ -66,7 +66,13 @@ public class Board implements WorldState {
         int count = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (tiles[i][j] != (i * 3) + (j + 1)) {
+
+                int except=(i * N) + (j + 1);
+                if (i == N - 1 && j == N - 1) {
+                    except = 0;  // 最后一个格子是 0
+                }
+
+                if (tiles[i][j] != except) {
                     count++;
                 }
             }
@@ -74,16 +80,24 @@ public class Board implements WorldState {
         return count;
     }
 
+
     public int manhattan() {
         int count = 0;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                int[] temp = search(i * 3 + 1);
-                count += Math.abs(temp[0] - i);
-                count += Math.abs(temp[1] - j);
+                int value = tiles[i][j];
+
+                if (value != 0) {  // 不算空格
+                    int goalRow = (value - 1) / N;
+                    int goalCol = (value - 1) % N;
+
+                    count += Math.abs(goalRow - i);
+                    count += Math.abs(goalCol - j);
+                }
             }
         }
+
         return count;
     }
     @Override

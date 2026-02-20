@@ -1,5 +1,6 @@
 package hw4.puzzle;
 
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -16,8 +17,10 @@ public class AlphabetEasyPuzzle implements WorldState {
         character = c;
     }
 
-    /** The neighbors of the WorldState are the characters before and after
-      * character. So if character == 'f', the neighbors will be 'e' and 'g'. */
+    /**
+     * The neighbors of the WorldState are the characters before and after
+     * character. So if character == 'f', the neighbors will be 'e' and 'g'.
+     */
     @Override
     public Iterable<WorldState> neighbors() {
         Set<WorldState> neighbs = new HashSet<>();
